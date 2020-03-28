@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [roomCode, setRoomCode] = useState(0);
+
+  const onCreateRoomClick = async () => {
+    const response = await fetch(
+      "http://localhost:3000/room/create/playerName/joe/",
+      {
+        method: "POST"
+      }
+    );
+
+    if (response.status == 200) {
+      const parsedResponse = await response.json();
+
+      console.log(parsedResponse);
+
+      if (parsedResponse.joined) {
+        setRoomCode(parsedResponse.roomCode);
+      }
+    }
+  };
+
+  const onJoinRoomClick = () => {};
+
+  const content =
+    roomCode > 0 ? (
+      <p>your in room {roomCode}</p>
+    ) : (
+      <>
+        <button onClick={onCreateRoomClick}>create room</button>
+        <button>join room</button>
+      </>
+    );
+
+  return <div className="App">{content}</div>;
 }
 
 export default App;
