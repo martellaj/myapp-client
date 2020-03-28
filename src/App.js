@@ -42,7 +42,7 @@ function App() {
 
   const content =
     roomCode > 0 ? (
-      <p>your in room {roomCode}</p>
+      <p>you're in room {roomCode}</p>
     ) : (
       <div className="joinRoom">
         <input
