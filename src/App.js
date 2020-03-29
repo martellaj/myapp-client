@@ -6,11 +6,16 @@ function App() {
   const [roomCode, setRoomCode] = useState(0);
   const [name, setName] = useState("");
   const [joinRoomCode, setJoinRoomCode] = useState("");
+  const [players, setPlayers] = useState([]);
 
-  let socket = null;
   React.useEffect(() => {
-    socket = io("http://localhost:3000");
-    return socket.close();
+    const socket = io("http://localhost:3000");
+
+    socket.on("newPlayer", payload => {
+      setPlayers(payload.players);
+    });
+
+    return () => socket.close();
   }, []);
 
   const onCreateRoomClick = async () => {
@@ -43,13 +48,26 @@ function App() {
 
       if (parsedResponse.joined) {
         setRoomCode(parsedResponse.roomCode);
+        setPlayers(parsedResponse.players);
       }
     }
   };
 
   const content =
     roomCode > 0 ? (
-      <p>you're in room {roomCode}</p>
+      <>
+        <p>you're in room {roomCode}.</p>
+        {players.length > 0 ? (
+          <p>who's all here?</p>
+        ) : (
+          <p>waiting for people to join...</p>
+        )}
+        <ul>
+          {players.map(player => (
+            <li key={player.name}>{player.name}</li>
+          ))}
+        </ul>
+      </>
     ) : (
       <div className="joinRoom">
         <input
