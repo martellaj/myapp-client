@@ -7,12 +7,18 @@ function App() {
   const [name, setName] = useState("");
   const [joinRoomCode, setJoinRoomCode] = useState("");
   const [players, setPlayers] = useState([]);
+  const [isLeader, setIsLeader] = useState(false);
+  const [isInGame, setIsInGame] = useState(false);
 
   React.useEffect(() => {
     const socket = io("http://localhost:3000");
 
     socket.on("newPlayer", payload => {
       setPlayers(payload.players);
+    });
+
+    socket.on("gameStarted", () => {
+      setIsInGame(true);
     });
 
     return () => socket.close();
@@ -26,11 +32,12 @@ function App() {
       }
     );
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       const parsedResponse = await response.json();
 
       if (parsedResponse.joined) {
         setRoomCode(parsedResponse.roomCode);
+        setIsLeader(true);
       }
     }
   };
@@ -43,7 +50,7 @@ function App() {
       }
     );
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       const parsedResponse = await response.json();
 
       if (parsedResponse.joined) {
@@ -52,6 +59,25 @@ function App() {
       }
     }
   };
+
+  const onStartGameClicked = async () => {
+    const response = await fetch(
+      `http://localhost:3000/room/start/${roomCode}`,
+      {
+        method: "POST"
+      }
+    );
+
+    if (response.status === 200) {
+      const parsedResponse = await response.json();
+
+      if (parsedResponse.gameStarted) {
+        setIsInGame(true);
+      }
+    }
+  };
+
+  const gameContent = <p>you're in a game now</p>;
 
   const content =
     roomCode > 0 ? (
@@ -67,6 +93,7 @@ function App() {
             <li key={player.name}>{player.name}</li>
           ))}
         </ul>
+        {isLeader && <button onClick={onStartGameClicked}>start game</button>}
       </>
     ) : (
       <div className="joinRoom">
@@ -113,7 +140,7 @@ function App() {
       </div>
     );
 
-  return <div className="App">{content}</div>;
+  return <div className="App">{isInGame ? gameContent : content}</div>;
 }
 
 export default App;
