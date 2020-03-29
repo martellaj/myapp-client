@@ -11,18 +11,27 @@ function App() {
   const [isInGame, setIsInGame] = useState(false);
 
   useEffect(() => {
+    const isRoomMessage = messageRoomCode => {
+      // eslint-disable-next-line
+      return messageRoomCode == roomCode;
+    };
+
     const socket = io("http://localhost:3000");
 
     socket.on("newPlayer", payload => {
-      setPlayers(payload.players);
+      if (isRoomMessage(payload.roomCode)) {
+        setPlayers(payload.players);
+      }
     });
 
-    socket.on("gameStarted", () => {
-      setIsInGame(true);
+    socket.on("gameStarted", payload => {
+      if (isRoomMessage(payload.roomCode)) {
+        setIsInGame(true);
+      }
     });
 
     return () => socket.close();
-  }, []);
+  }, [roomCode]);
 
   const onRoomJoined = (roomCode, players, isLeader) => {
     setRoomCode(roomCode);
