@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 export default function Welcome(props) {
-  const [name, setName] = useState("");
   const [roomCode, setRoomCode] = useState("");
+  const { name, onNameChange } = props;
 
   const onCreateRoomClick = async () => {
     const response = await fetch(
@@ -47,7 +47,7 @@ export default function Welcome(props) {
       <input
         placeholder="name"
         value={name}
-        onChange={event => setName(event.target.value)}
+        onChange={event => onNameChange(event.target.value)}
         style={{
           marginBottom: "12px"
         }}

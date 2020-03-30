@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
 import "./App.css";
 import io from "socket.io-client";
-import Welcome from "./Welcome";
+import Pad from "./Pad";
+import React, { useState, useEffect } from "react";
 import WaitingRoom from "./WaitingRoom";
+import Welcome from "./Welcome";
 
 function App() {
-  const [roomCode, setRoomCode] = useState(0);
-  const [players, setPlayers] = useState([]);
   const [isLeader, setIsLeader] = useState(false);
-  const [isInGame, setIsInGame] = useState(false);
+  const [name, setName] = useState("");
+  const [players, setPlayers] = useState([]);
+  const [roomCode, setRoomCode] = useState(0);
+  const [pad, setPad] = useState(null);
 
   useEffect(() => {
     const isRoomMessage = messageRoomCode => {
@@ -24,14 +26,24 @@ function App() {
       }
     });
 
-    socket.on("gameStarted", payload => {
+    socket.on("nextRound", async payload => {
       if (isRoomMessage(payload.roomCode)) {
-        setIsInGame(true);
+        const response = await fetch(
+          `http://localhost:3000/room/nextRound/${roomCode}/playerName/${name}/`,
+          {
+            method: "POST"
+          }
+        );
+
+        if (response.status === 200) {
+          const parsedResponse = await response.json();
+          setPad(parsedResponse.pad);
+        }
       }
     });
 
     return () => socket.close();
-  }, [roomCode]);
+  }, [roomCode, name]);
 
   const onRoomJoined = (roomCode, players, isLeader) => {
     setRoomCode(roomCode);
@@ -46,12 +58,10 @@ function App() {
       roomCode={roomCode}
     />
   ) : (
-    <Welcome onRoomJoined={onRoomJoined} />
+    <Welcome name={name} onRoomJoined={onRoomJoined} onNameChange={setName} />
   );
 
-  const gameContent = <p>you're in a game now</p>;
-
-  return <div className="App">{isInGame ? gameContent : preGameContent}</div>;
+  return <div className="App">{pad ? <Pad pad={pad} /> : preGameContent}</div>;
 }
 
 export default App;
