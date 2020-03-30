@@ -61,7 +61,11 @@ function App() {
     <Welcome name={name} onRoomJoined={onRoomJoined} onNameChange={setName} />
   );
 
-  return <div className="App">{pad ? <Pad pad={pad} /> : preGameContent}</div>;
+  return (
+    <div className="App">
+      {pad ? <Pad pad={pad} roomCode={roomCode} name={name} /> : preGameContent}
+    </div>
+  );
 }
 
 export default App;
