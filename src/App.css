@@ -8,13 +8,14 @@
 }
 
 .content {
-  max-width: 500px;
+  max-width: 350px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   height: 100%;
-  width: 90%;
+  width: 100%;
+  align-items: center;
 }
 
 .Welcome {
@@ -29,8 +30,9 @@
 .canvasStyle {
   border: 1px black solid;
   border-radius: 4px;
-  width: auto !important;
-  flex-grow: 2;
+  width: 350px !important;
+  height: 500px !important;
+  margin-bottom: 12px;
 }
 
 .thicknessSlider {

@@ -76,7 +76,8 @@ export default function Pad(props) {
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "start"
+            alignItems: "start",
+            width: "100%"
           }}
         >
           <p style={{ fontWeight: "bold", marginBottom: "0" }}>thickness:</p>
@@ -97,7 +98,8 @@ export default function Pad(props) {
           style={{
             display: "flex",
             justifyContent: "space-evenly",
-            margin: "12px 0"
+            margin: "12px 0",
+            width: "100%"
           }}
         >
           <button
@@ -129,7 +131,8 @@ export default function Pad(props) {
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "start"
+            alignItems: "start",
+            width: "100%"
           }}
         >
           <p

@@ -2,6 +2,7 @@ import "./App.css";
 import io from "socket.io-client";
 import Pad from "./Pad";
 import React, { useState, useEffect } from "react";
+import Results from "./Results";
 import WaitingRoom from "./WaitingRoom";
 import Welcome from "./Welcome";
 
@@ -10,6 +11,7 @@ function App() {
   const [isLeader, setIsLeader] = useState(false);
   const [name, setName] = useState(getName());
   const [pad, setPad] = useState(null);
+  const [resultPads, setResultPads] = useState(null);
   const [players, setPlayers] = useState([]);
   const [roomCode, setRoomCode] = useState(0);
 
@@ -46,7 +48,18 @@ function App() {
 
     socket.on("gameOver", async payload => {
       if (isRoomMessage(payload.roomCode)) {
-        setGameState("post");
+        const response = await fetch(
+          `http://localhost:3000/room/gameOver/${roomCode}`,
+          {
+            method: "POST"
+          }
+        );
+
+        if (response.status === 200) {
+          const parsedResponse = await response.json();
+          setResultPads(parsedResponse.pads);
+          setGameState("post");
+        }
       }
     });
 
@@ -78,7 +91,7 @@ function App() {
       case "in":
         return <Pad pad={pad} roomCode={roomCode} name={name} />;
       case "post":
-        return <p>game over</p>;
+        return <Results pads={resultPads} />;
       default:
         return <>🤷‍♀️</>;
     }
