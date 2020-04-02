@@ -44,45 +44,60 @@ export default function Welcome(props) {
 
   return (
     <div className="Welcome">
-      <input
-        placeholder="name"
-        value={name}
-        onChange={event => onNameChange(event.target.value)}
+      <div
         style={{
-          marginBottom: "12px"
+          marginBottom: "12px",
+          display: "flex",
+          flexDirection: "column"
         }}
-      />
-      <div style={{ display: "flex" }}>
-        <div
+      >
+        <strong>your name</strong>
+        <input
+          placeholder="joe"
+          value={name}
+          onChange={event => onNameChange(event.target.value)}
+          style={{ marginTop: "6px", marginBottom: "6px" }}
+        />
+      </div>
+
+      <div
+        style={{
+          marginBottom: "12px",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        <strong style={{ marginTop: "6px", marginBottom: "6px" }}>
+          create a new room
+        </strong>
+        <button
+          onClick={onCreateRoomClick}
+          disabled={!name}
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginRight: "24px"
+            marginBottom: "12px"
           }}
         >
-          create a new room
-          <button
-            onClick={onCreateRoomClick}
-            disabled={!name}
-            style={{
-              marginBottom: "12px"
-            }}
-          >
-            create
-          </button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          join a room
-          <input
-            placeholder="1234"
-            value={roomCode}
-            onChange={event => setRoomCode(event.target.value)}
-            style={{ marginTop: "6px", marginBottom: "6px" }}
-          />
-          <button onClick={onJoinRoomClick} disabled={!roomCode}>
-            join
-          </button>
-        </div>
+          🏠 new room
+        </button>
+      </div>
+
+      <div
+        style={{
+          marginBottom: "12px",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        <strong>join a room</strong>
+        <input
+          placeholder="i.e. 0825"
+          value={roomCode}
+          onChange={event => setRoomCode(event.target.value)}
+          style={{ marginTop: "6px", marginBottom: "6px" }}
+        />
+        <button onClick={onJoinRoomClick} disabled={!roomCode}>
+          🧑 join room
+        </button>
       </div>
     </div>
   );

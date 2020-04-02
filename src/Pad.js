@@ -107,14 +107,14 @@ export default function Pad(props) {
               canvasRef.current.undo();
             }}
           >
-            undo
+            ✏ undo
           </button>
           <button
             onClick={() => {
               canvasRef.current.clear();
             }}
           >
-            clear
+            💣 clear
           </button>
         </div>
       </>
@@ -164,7 +164,7 @@ export default function Pad(props) {
           alignSelf: "center"
         }}
       >
-        submit
+        🤞 submit
       </button>
     </>
   );

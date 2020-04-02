@@ -18,19 +18,21 @@ export default function WaitingRoom(props) {
 
   return (
     <div style={{ alignSelf: "center" }}>
-      <p>you're in room {roomCode}.</p>
+      <p style={{ margin: "24px 0" }}>
+        you're in room <strong>{roomCode}</strong>
+      </p>
       {players.length > 0 ? (
-        <p>who's all here?</p>
+        <p style={{ margin: "24px 0" }}>who's in the house?</p>
       ) : (
-        <p>waiting for people to join...</p>
+        <p style={{ margin: "24px 0" }}>waiting for people to join...</p>
       )}
-      <ul>
+      <ul style={{ margin: "24px 0" }}>
         {players.map(player => (
           <li key={player.name}>{player.name}</li>
         ))}
       </ul>
       {showStartGameButton && (
-        <button onClick={onStartGameClicked}>start game</button>
+        <button onClick={onStartGameClicked}>🔫 start game</button>
       )}
     </div>
   );
