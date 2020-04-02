@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CanvasDraw from "react-canvas-draw";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -11,7 +11,8 @@ export default function Pad(props) {
   const [guess, setGuess] = useState("");
   const [waitingForOthers, setWaitingForOthers] = useState("");
   const [drawing] = useState({});
-  const [thickness, setThickness] = useState(5);
+  const [thickness, setThickness] = useState(2);
+  const canvasRef = useRef();
 
   useEffect(() => {
     setWaitingForOthers(false);
@@ -34,9 +35,9 @@ export default function Pad(props) {
 
   const title =
     owner.position === holder ? (
-      <p>you have your own pad</p>
+      <p style={{ marginBottom: "0" }}>you have your own pad</p>
     ) : (
-      <p>
+      <p style={{ marginBottom: "0" }}>
         you have <strong>{owner.name}</strong>'s pad
       </p>
     );
@@ -48,22 +49,54 @@ export default function Pad(props) {
           draw your best <strong>{pages[pages.length - 1]}</strong>
         </p>
         <CanvasDraw
+          ref={canvasRef}
           hideGrid={true}
           className={"canvasStyle"}
           brushRadius={thickness}
         />
-        <Slider
-          className={"thicknessSlider"}
-          min={1}
-          max={12}
-          value={thickness}
-          onChange={value => {
-            setThickness(value);
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start"
           }}
-          onAfterChange={value => {
-            setThickness(value);
+        >
+          <p style={{ fontWeight: "bold", marginBottom: "0" }}>thickness:</p>
+          <Slider
+            className={"thicknessSlider"}
+            min={1}
+            max={12}
+            value={thickness}
+            onChange={value => {
+              setThickness(value);
+            }}
+            onAfterChange={value => {
+              setThickness(value);
+            }}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            margin: "12px 0"
           }}
-        />
+        >
+          <button
+            onClick={() => {
+              canvasRef.current.undo();
+            }}
+          >
+            undo
+          </button>
+          <button
+            onClick={() => {
+              canvasRef.current.clear();
+            }}
+          >
+            clear
+          </button>
+        </div>
       </>
     ) : (
       <>
@@ -86,7 +119,8 @@ export default function Pad(props) {
         onClick={onSubmitClicked}
         disabled={!guess && !drawing && !isTesting}
         style={{
-          marginBottom: "12px"
+          marginBottom: "12px",
+          alignSelf: "center"
         }}
       >
         submit

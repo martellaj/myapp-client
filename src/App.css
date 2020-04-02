@@ -4,10 +4,16 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  height: 100vh;
 }
 
 .content {
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
 }
 
 .Welcome {
@@ -23,6 +29,7 @@
   border: 1px black solid;
   border-radius: 4px;
   width: auto !important;
+  flex-grow: 2;
 }
 
 .thicknessSlider {

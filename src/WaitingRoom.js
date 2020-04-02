@@ -17,7 +17,7 @@ export default function WaitingRoom(props) {
   };
 
   return (
-    <>
+    <div style={{ alignSelf: "center" }}>
       <p>you're in room {roomCode}.</p>
       {players.length > 0 ? (
         <p>who's all here?</p>
@@ -32,6 +32,6 @@ export default function WaitingRoom(props) {
       {showStartGameButton && (
         <button onClick={onStartGameClicked}>start game</button>
       )}
-    </>
+    </div>
   );
 }
