@@ -8,7 +8,7 @@ import Welcome from "./Welcome";
 function App() {
   const [gameState, setGameState] = useState("pre"); // pre, in, post
   const [isLeader, setIsLeader] = useState(false);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(getName());
   const [pad, setPad] = useState(null);
   const [players, setPlayers] = useState([]);
   const [roomCode, setRoomCode] = useState(0);
@@ -89,6 +89,17 @@ function App() {
       <div className="content">{content}</div>
     </div>
   );
+}
+
+function getName() {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < 5; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 export default App;
