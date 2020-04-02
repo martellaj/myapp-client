@@ -4,8 +4,6 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 export default function Pad(props) {
-  const isTesting = true;
-
   const { owner, holder, pages, task, id } = props.pad;
 
   const [guess, setGuess] = useState("");
@@ -109,7 +107,9 @@ export default function Pad(props) {
         <input
           style={{ marginTop: "12px", marginBottom: "12px" }}
           value={guess}
-          onChange={setGuess}
+          onChange={e => {
+            setGuess(e.target.value);
+          }}
         />
       </>
     );
@@ -122,7 +122,6 @@ export default function Pad(props) {
       {taskDescription}
       <button
         onClick={onSubmitClicked}
-        disabled={!guess && !drawing && !isTesting}
         style={{
           marginBottom: "12px",
           alignSelf: "center"
