@@ -21,14 +21,19 @@ export default function Pad(props) {
   const onSubmitClicked = () => {
     setWaitingForOthers(true);
 
+    let data;
     if (task === "draw") {
+      data = { drawing: canvasRef.current.getSaveData() };
     } else {
+      data = { guess: guess };
     }
 
     fetch(
       `http://localhost:3000/room/submit/${props.roomCode}/playerName/${props.name}/padId/${id}`,
       {
-        method: "POST"
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
       }
     );
   };
