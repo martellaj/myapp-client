@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import CanvasDraw from "react-canvas-draw";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 export default function Pad(props) {
   const isTesting = true;
@@ -8,6 +11,7 @@ export default function Pad(props) {
   const [guess, setGuess] = useState("");
   const [waitingForOthers, setWaitingForOthers] = useState("");
   const [drawing] = useState({});
+  const [thickness, setThickness] = useState(5);
 
   useEffect(() => {
     setWaitingForOthers(false);
@@ -39,9 +43,28 @@ export default function Pad(props) {
 
   const taskDescription =
     task === "draw" ? (
-      <p>
-        draw your best <strong>{pages[pages.length - 1]}</strong>
-      </p>
+      <>
+        <p>
+          draw your best <strong>{pages[pages.length - 1]}</strong>
+        </p>
+        <CanvasDraw
+          hideGrid={true}
+          className={"canvasStyle"}
+          brushRadius={thickness}
+        />
+        <Slider
+          className={"thicknessSlider"}
+          min={1}
+          max={12}
+          value={thickness}
+          onChange={value => {
+            setThickness(value);
+          }}
+          onAfterChange={value => {
+            setThickness(value);
+          }}
+        />
+      </>
     ) : (
       <>
         <p>what do you think this drawing is?</p>

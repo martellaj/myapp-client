@@ -84,7 +84,11 @@ function App() {
     }
   }, [gameState, players, isLeader, roomCode, name, pad]);
 
-  return <div className="App">{content}</div>;
+  return (
+    <div className="App">
+      <div className="content">{content}</div>
+    </div>
+  );
 }
 
 export default App;
