@@ -39,6 +39,14 @@ export default function Results(props) {
           </li>
         ))}
       </ul>
+      <button
+        style={{ marginTop: "28px" }}
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        🏃‍♂️ leave room
+      </button>
     </>
   );
 
