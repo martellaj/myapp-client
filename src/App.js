@@ -6,11 +6,12 @@ import WaitingRoom from "./WaitingRoom";
 import Welcome from "./Welcome";
 
 function App() {
+  const [gameState, setGameState] = useState("pre"); // pre, in, post
   const [isLeader, setIsLeader] = useState(false);
   const [name, setName] = useState("");
+  const [pad, setPad] = useState(null);
   const [players, setPlayers] = useState([]);
   const [roomCode, setRoomCode] = useState(0);
-  const [pad, setPad] = useState(null);
 
   useEffect(() => {
     const isRoomMessage = messageRoomCode => {
@@ -38,7 +39,14 @@ function App() {
         if (response.status === 200) {
           const parsedResponse = await response.json();
           setPad(parsedResponse.pad);
+          setGameState("in");
         }
+      }
+    });
+
+    socket.on("gameOver", async payload => {
+      if (isRoomMessage(payload.roomCode)) {
+        setGameState("post");
       }
     });
 
@@ -51,21 +59,32 @@ function App() {
     setIsLeader(isLeader);
   };
 
-  const preGameContent = roomCode ? (
-    <WaitingRoom
-      players={players}
-      showStartGameButton={isLeader}
-      roomCode={roomCode}
-    />
-  ) : (
-    <Welcome name={name} onRoomJoined={onRoomJoined} onNameChange={setName} />
-  );
+  const content = React.useMemo(() => {
+    switch (gameState) {
+      case "pre":
+        return roomCode ? (
+          <WaitingRoom
+            players={players}
+            showStartGameButton={isLeader}
+            roomCode={roomCode}
+          />
+        ) : (
+          <Welcome
+            name={name}
+            onRoomJoined={onRoomJoined}
+            onNameChange={setName}
+          />
+        );
+      case "in":
+        return <Pad pad={pad} roomCode={roomCode} name={name} />;
+      case "post":
+        return <p>game over</p>;
+      default:
+        return <>🤷‍♀️</>;
+    }
+  }, [gameState, players, isLeader, roomCode, name, pad]);
 
-  return (
-    <div className="App">
-      {pad ? <Pad pad={pad} roomCode={roomCode} name={name} /> : preGameContent}
-    </div>
-  );
+  return <div className="App">{content}</div>;
 }
 
 export default App;
