@@ -7,14 +7,29 @@ export default function Pad(props) {
   const { owner, holder, pages, task, id } = props.pad;
 
   const [guess, setGuess] = useState("");
-  const [waitingForOthers, setWaitingForOthers] = useState("");
-  const [drawing] = useState({});
+  const [guessDrawn, setGuessDrawn] = useState(false);
   const [thickness, setThickness] = useState(2);
+  const [waitingForOthers, setWaitingForOthers] = useState("");
   const canvasRef = useRef();
+  const guessCanvasRef = useRef();
 
   useEffect(() => {
     setWaitingForOthers(false);
+    setGuessDrawn(false);
   }, [props.pad]);
+
+  useEffect(() => {
+    if (props.pad.task === "guess" && !guessDrawn) {
+      if (guessCanvasRef.current) {
+        guessCanvasRef.current.loadSaveData(
+          props.pad.pages[props.pad.pages.length - 1].drawing,
+          false
+        );
+
+        setGuessDrawn(true);
+      }
+    }
+  });
 
   const onSubmitClicked = () => {
     setWaitingForOthers(true);
@@ -104,13 +119,32 @@ export default function Pad(props) {
     ) : (
       <>
         <p>what do you think this drawing is?</p>
-        <input
-          style={{ marginTop: "12px", marginBottom: "12px" }}
-          value={guess}
-          onChange={e => {
-            setGuess(e.target.value);
-          }}
+        <CanvasDraw
+          ref={guessCanvasRef}
+          hideGrid={true}
+          className={"canvasStyle"}
+          disabled={true}
         />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start"
+          }}
+        >
+          <p
+            style={{ fontWeight: "bold", marginBottom: "0", marginTop: "6px" }}
+          >
+            guess:
+          </p>
+          <input
+            style={{ marginTop: "12px", marginBottom: "12px", width: "100%" }}
+            value={guess}
+            onChange={e => {
+              setGuess(e.target.value);
+            }}
+          />
+        </div>
       </>
     );
 
@@ -123,7 +157,7 @@ export default function Pad(props) {
       <button
         onClick={onSubmitClicked}
         style={{
-          marginBottom: "12px",
+          margin: "12px 0",
           alignSelf: "center"
         }}
       >
