@@ -108,7 +108,7 @@ function App() {
 }
 
 function getName() {
-  const isTesting = true;
+  const isTesting = false;
   const storedName = window.localStorage.getItem("name");
   if (storedName && !isTesting) {
     return storedName;
