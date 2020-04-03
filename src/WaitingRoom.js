@@ -1,15 +1,13 @@
+import getApi from "./getApi";
 import React from "react";
 
 export default function WaitingRoom(props) {
   const { players, showStartGameButton, roomCode } = props;
 
   const onStartGameClicked = async () => {
-    const response = await fetch(
-      `http://localhost:3000/room/start/${roomCode}`,
-      {
-        method: "POST"
-      }
-    );
+    const response = await fetch(`${getApi()}room/start/${roomCode}`, {
+      method: "POST"
+    });
 
     if (response.status !== 200) {
       // todo: error handling

@@ -1,16 +1,14 @@
 import React, { useState } from "react";
+import getApi from "./getApi";
 
 export default function Welcome(props) {
   const [roomCode, setRoomCode] = useState("");
   const { name, onNameChange } = props;
 
   const onCreateRoomClick = async () => {
-    const response = await fetch(
-      `http://localhost:3000/room/create/playerName/${name}/`,
-      {
-        method: "POST"
-      }
-    );
+    const response = await fetch(`${getApi()}room/create/playerName/${name}/`, {
+      method: "POST"
+    });
 
     if (response.status === 200) {
       const parsedResponse = await response.json();
@@ -23,7 +21,7 @@ export default function Welcome(props) {
 
   const onJoinRoomClick = async () => {
     const response = await fetch(
-      `http://localhost:3000/room/join/${roomCode}/playerName/${name}/`,
+      `${getApi()}room/join/${roomCode}/playerName/${name}/`,
       {
         method: "POST"
       }

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Results from "./Results";
 import WaitingRoom from "./WaitingRoom";
 import Welcome from "./Welcome";
+import getApi from "./getApi";
 
 function App() {
   const [gameState, setGameState] = useState("pre"); // pre, in, post
@@ -21,7 +22,9 @@ function App() {
       return messageRoomCode == roomCode;
     };
 
-    const socket = io("http://localhost:3000");
+    const socket = io(getApi(), {
+      transports: ["websocket"]
+    });
 
     socket.on("newPlayer", payload => {
       if (isRoomMessage(payload.roomCode)) {
@@ -32,7 +35,7 @@ function App() {
     socket.on("nextRound", async payload => {
       if (isRoomMessage(payload.roomCode)) {
         const response = await fetch(
-          `http://localhost:3000/room/nextRound/${roomCode}/playerName/${name}/`,
+          `${getApi()}room/nextRound/${roomCode}/playerName/${name}/`,
           {
             method: "POST"
           }
@@ -48,12 +51,9 @@ function App() {
 
     socket.on("gameOver", async payload => {
       if (isRoomMessage(payload.roomCode)) {
-        const response = await fetch(
-          `http://localhost:3000/room/gameOver/${roomCode}`,
-          {
-            method: "POST"
-          }
-        );
+        const response = await fetch(`${getApi()}room/gameOver/${roomCode}`, {
+          method: "POST"
+        });
 
         if (response.status === 200) {
           const parsedResponse = await response.json();

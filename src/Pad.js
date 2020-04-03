@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import CanvasDraw from "react-canvas-draw";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import getApi from "./getApi";
 
 export default function Pad(props) {
   const { owner, holder, pages, task, id } = props.pad;
@@ -42,7 +43,9 @@ export default function Pad(props) {
     }
 
     fetch(
-      `http://localhost:3000/room/submit/${props.roomCode}/playerName/${props.name}/padId/${id}`,
+      `${getApi()}room/submit/${props.roomCode}/playerName/${
+        props.name
+      }/padId/${id}`,
       {
         method: "POST",
         body: JSON.stringify(data),
