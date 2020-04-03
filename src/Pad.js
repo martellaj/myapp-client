@@ -74,6 +74,7 @@ export default function Pad(props) {
           hideGrid={true}
           className={"canvasStyle"}
           brushRadius={thickness}
+          lazyRadius={0}
         />
         <div
           style={{

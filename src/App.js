@@ -102,20 +102,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="content">
-        {content}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            marginBottom: "12px",
-            fontSize: "24px",
-            marginTop: "12px"
-          }}
-        >
-          guess-a-sketch
-        </div>
-      </div>
+      <div className="content">{content}</div>
     </div>
   );
 }

@@ -97,6 +97,18 @@ export default function Welcome(props) {
           🧑 join room
         </button>
       </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          marginBottom: "12px",
+          fontSize: "24px",
+          marginTop: "12px"
+        }}
+      >
+        guess-a-sketch
+      </div>
     </div>
   );
 }
