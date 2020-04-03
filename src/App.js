@@ -92,7 +92,9 @@ function App() {
           />
         );
       case "in":
-        return <Pad pad={pad} roomCode={roomCode} name={name} />;
+        return (
+          <Pad pad={pad} roomCode={roomCode} name={name} isLeader={isLeader} />
+        );
       case "post":
         return <Results pads={resultPads} />;
       default:

@@ -159,21 +159,26 @@ export default function Pad(props) {
     <>
       <p>waiting for others to finish...</p>
 
-      <p style={{ marginTop: "24px" }}>everyone done and you're stuck?</p>
-      <button
-        onClick={() => {
-          fetch(
-            `${getApi()}room/force/${props.roomCode}/playerName/${
-              props.name
-            }/padId/${id}`,
-            {
-              method: "POST"
-            }
-          );
-        }}
-      >
-        👊 force next round
-      </button>
+      {props.isLeader && (
+        <>
+          {" "}
+          <p style={{ marginTop: "24px" }}>everyone done and you're stuck?</p>
+          <button
+            onClick={() => {
+              fetch(
+                `${getApi()}room/force/${props.roomCode}/playerName/${
+                  props.name
+                }/padId/${id}`,
+                {
+                  method: "POST"
+                }
+              );
+            }}
+          >
+            👊 force next round
+          </button>
+        </>
+      )}
     </>
   ) : (
     <>
