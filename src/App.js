@@ -85,7 +85,10 @@ function App() {
           <Welcome
             name={name}
             onRoomJoined={onRoomJoined}
-            onNameChange={setName}
+            onNameChange={name => {
+              setName(name);
+              window.localStorage.setItem("name", name);
+            }}
           />
         );
       case "in":
@@ -105,6 +108,12 @@ function App() {
 }
 
 function getName() {
+  const isTesting = true;
+  const storedName = window.localStorage.getItem("name");
+  if (storedName && !isTesting) {
+    return storedName;
+  }
+
   var result = "";
   var characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
