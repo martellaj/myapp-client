@@ -60,17 +60,17 @@ export default function ResultPad(props) {
             setPage(page - 1);
           }}
         >
-          previous page
+          ⏪ previous page
         </button>
         <p style={{ margin: 0 }}>
           page <strong>{page}</strong>
         </p>
         {page === pages.length - 1 ? (
           <button onClick={() => setShowWord(true)}>
-            reveal {ownerName}'s word
+            🎩 reveal {ownerName}'s word
           </button>
         ) : (
-          <button onClick={() => setPage(page + 1)}>next page</button>
+          <button onClick={() => setPage(page + 1)}>⏩ next page</button>
         )}
       </div>
       {showWord && <strong style={{ marginBottom: "12px" }}>{pages[0]}</strong>}
